@@ -1,0 +1,28 @@
+--Create a grocery store database
+
+CREATE TABLE bikes (id INTEGER PRIMARY KEY, size TEXT, color TEXT, price INTEGER, model INTEGER);
+INSERT INTO bikes VALUES (1, 'small', 'red', 100, 1995);
+INSERT INTO bikes VALUES (2, 'small', 'blue', 200, 1996);
+INSERT INTO bikes VALUES (3, 'medium', 'red', 250, 1998);
+INSERT INTO bikes VALUES (4, 'large', 'purple', 150, 1998);
+INSERT INTO bikes VALUES (5, 'small', 'orange', 300, 1999);
+INSERT INTO bikes VALUES (6, 'medium', 'yellow', 200, 1995);
+INSERT INTO bikes VALUES (7, 'large', 'blue', 100, 1996);
+INSERT INTO bikes VALUES (8, 'small', 'red', 50, 1998);
+INSERT INTO bikes VALUES (9, 'large', 'purple', 55, 1998);
+INSERT INTO bikes VALUES (10, 'small', 'orange', 105, 1999);
+INSERT INTO bikes VALUES (11, 'large', 'blue', 205, 1996);
+INSERT INTO bikes VALUES (12, 'small', 'red', 200, 1998);
+INSERT INTO bikes VALUES (13, 'large', 'purple', 400, 1998);
+INSERT INTO bikes VALUES (14, 'small', 'orange', 450, 1999);
+INSERT INTO bikes VALUES (15, 'large', 'blue', 275, 1992);
+
+--display the database ordered by price (lowest to highest).
+
+SELECT * from bikes
+ORDER BY price asc; 
+
+--what is the sum of the prices of all bikes, grouped by size (small, medium, large)
+
+SELECT size, sum(price) from bikes
+GROUP by size;
