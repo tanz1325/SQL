@@ -1,0 +1,62 @@
+/* Create table about the people and what they do here */
+
+CREATE TABLE famous_authors (id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT, last_name TEXT, date_of_birth TEXT, country TEXT);
+
+INSERT INTO famous_authors VALUES (1,'Bob', 'Ross', '04/02/1960', 'Canada');
+INSERT INTO famous_authors VALUES (2,'Miley', 'Cyrus', '05/10/1983', 'United States');
+INSERT INTO famous_authors VALUES (3,'Mahatma', 'Gandhi', '08/02/1902', 'India');
+INSERT INTO famous_authors VALUES (4,'Lionel', 'Messi', '05/28/1998', 'Argentina');
+INSERT INTO famous_authors VALUES (5,'Sunny', 'Deol', '03/12/1981', 'India');
+INSERT INTO famous_authors VALUES (6,'Jaques', 'Cartier', '12/10/1943', 'France');
+INSERT INTO famous_authors VALUES (7,'The', 'Weeknd', '04/03/1988', 'United States');
+INSERT INTO famous_authors VALUES (8,'Justin', 'Beiber', '06/22/1990', 'Canada');
+INSERT INTO famous_authors VALUES (9,'Agatha', 'Shelly', '03/08/1970', 'United States');
+INSERT INTO famous_authors VALUES (10,'Drake', 'Graham', '03/15/1980', 'United States');
+INSERT INTO famous_authors VALUES (11,'Cristiano', 'Ronaldo', '07/03/1980', 'Spain');
+INSERT INTO famous_authors VALUES (12,'Neymar', 'Jr', '05/28/1986', 'Brazil');
+INSERT INTO famous_authors VALUES (13,'Arthur', 'Reed', '03/07/1980', 'Turkey');
+INSERT INTO famous_authors VALUES (14,'Francine', 'Frensky', '05/16/1983', 'Mexico');
+INSERT INTO famous_authors VALUES (15,'Edward', 'Ratburn', '08/09/1967', 'Greece');
+
+CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, author_id INTEGER, title TEXT, publish_year TEXT); 
+
+INSERT INTO books (author_id, title, publish_year) VALUES (1, 'How to Paint', '1990');
+INSERT INTO books (author_id, title, publish_year) VALUES (2, 'How to be a Rockstar', '2000');
+INSERT INTO books (author_id, title, publish_year) VALUES (3, 'How to Master Public Speaking', '1960');
+INSERT INTO books (author_id, title, publish_year) VALUES (4, 'How to Play Soccer', '2023');
+INSERT INTO books (author_id, title, publish_year) VALUES (5, 'How to be an Actor', '1990');
+INSERT INTO books (author_id, title, publish_year) VALUES (6, 'How to learn History', '2000');
+INSERT INTO books (author_id, title, publish_year) VALUES (7, 'How to be a Singer', '2015');
+INSERT INTO books (author_id, title, publish_year) VALUES (8, 'How to be a Great Singer', '2020');
+INSERT INTO books (author_id, title, publish_year) VALUES (9, 'How to Write a Mystery Novel', '1995');
+INSERT INTO books (author_id, title, publish_year) VALUES (10, 'How to get in the 6ix', '2003');
+INSERT INTO books (author_id, title, publish_year) VALUES (11, 'How to be better than Messi', '2000');
+INSERT INTO books (author_id, title, publish_year) VALUES (12, 'How to be better than Ronaldo', '2006');
+INSERT INTO books (author_id, title, publish_year) VALUES (13, 'How to Make Friends', '1996');
+INSERT INTO books (author_id, title, publish_year) VALUES (14, 'How to Annoy Arthur', '1997');
+INSERT INTO books (author_id, title, publish_year) VALUES (15, 'How to Teach 3rd Grade', '1987');
+
+
+SELECT * FROM famous_authors;
+SELECT * FROM books;
+
+/*What are the names of the books that each author has written?*/ 
+
+/*For this question, we can do an inner join, which will join the entire first table (famous_authors) with the second table (books) to show a list of the name of the author and the associated book they have written.*/ 
+
+SELECT famous_authors.first_name, famous_authors.last_name, books.title FROM famous_authors
+INNER JOIN books
+ON famous_authors.id = books.author_id;
+
+/*In which year did each author publish their book?*/
+
+SELECT famous_authors.first_name, famous_authors.last_name, books.publish_year from famous_authors
+INNER JOIN books
+ON famous_authors.id = books.author_id;
+
+/*How many authors published a book after 1995?*/
+
+SELECT count(*) publish_year_after_1995 from famous_authors
+INNER JOIN books
+ON famous_authors.id = books.author_id
+WHERE publish_year > 1995
