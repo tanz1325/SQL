@@ -1,0 +1,49 @@
+In this SQL, I'm querying a database with multiple tables in it to analyze statistics about customer and order data. 
+
+/*How many orders were placed in January? Remember to filter out the blank and incorrect order IDs like we did in the "dealing with messy data" section of the previous lesson!
+*/
+SELECT count(*) FROM BIT_DB.JanSales
+WHERE orderID <> 'Order ID' AND length(orderID)=6;
+/*9681*/
+
+/*How many of those orders were for an iPhone?*/
+SELECt COUNT(*) FROM BIT_DB.JanSales
+WHERE length(orderID)=6
+AND Product = 'iPhone';
+/*379*/
+
+/*Select the customer account numbers for all the orders that were placed in February.*/
+SELECT orderID, acctnum FROM BIT_DB.FebSales as a
+INNER JOIN BIT_DB.customers as b
+ON a.orderID = b.order_id
+WHERE length(orderID)=6
+
+/*Which product was the cheapest one sold in January, and what was the price?*/
+SELECT Product, price FROM BIT_DB.JanSales
+WHERE length(orderID)=6
+GROUP BY Product
+ORDER BY price ASC
+/*AAA Batteries (4-pack)*/
+
+/*What is the total revenue for each product sold in January? (Revenue can be calculated using the number of products sold and the price of the products).
+*/
+SELECT Product, ROUND(SUM(price*quantity)) FROM BIT_DB.JanSales
+WHERE length(orderID) = 6
+GROUP BY Product;
+
+/*Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?*/
+SELECT Product,(SUM(Quantity*price)) FROM BIT_DB.FebSales
+WHERE length(orderID)= 6
+AND location = '548 Lincoln St, Seattle, WA 98101'
+GROUP BY Product
+/*AA Batteries (4-pack), 2, 3.84 each, total revenue (2*3.84) = 7.68*/
+
+/*How many customers ordered more than 2 products at a time in February, and what was the average amount spent for those customers?*/
+SELECT COUNT(distinct cust.acctnum), 
+AVG(Quantity*price)
+FROM BIT_DB.FebSales Feb
+LEFT JOIN BIT_DB.customers cust
+ON FEB.orderid=cust.order_id
+WHERE Feb.Quantity>2
+AND length(orderid) = 6 
+/*278 customers, average price spent by those customers is $13.83*/
