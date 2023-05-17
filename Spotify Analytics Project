@@ -1,0 +1,102 @@
+/* Below is a data analysis of 'Spotify top 50 songs in 2021' downloaded from Kaggle. The first step was to create a table to import the 
+data from the .csv file*/. 
+
+CREATE TABLE BIT_DB.Spotifydata (
+    id               INTEGER        PRIMARY KEY,
+    artist_name      VARCHAR        NOT NULL,
+    track_name       VARCHAR        NOT NULL,
+    track_id         VARCHAR        NOT NULL,
+    popularity       INTEGER        NOT NULL,
+    danceability     DECIMAL (4, 3) NOT NULL,
+    energy           DECIMAL (4, 3) NOT NULL,
+    song_key         INTEGER        NOT NULL,
+    loudness         DECIMAL (5, 3) NOT NULL,
+    song_mode        INTEGER        NOT NULL,
+    speechiness      DECIMAL (5, 4) NOT NULL,
+    acousticness     DECIMAL (6, 5) NOT NULL,
+    instrumentalness DECIMAL (8, 7) NOT NULL,
+    liveness         DECIMAL (5, 4) NOT NULL,
+    valence          DECIMAL (4, 3) NOT NULL,
+    tempo            DECIMAL (6, 3) NOT NULL,
+    duration_ms      INTEGER        NOT NULL,
+    time_signature   INTEGER        NOT NULL
+
+);
+
+-- Import the downloaded Kaggle Spotify data into the newly created table, and view all the columns
+
+SELECT *
+  FROM BIT_DB.Spotifydata;
+  
+-- Who are the top 5 artists, and their songs, ranked by popularity?
+
+SELECT artist_name,
+       track_name,
+       popularity
+  FROM BIT_DB.Spotifydata
+ ORDER BY popularity DESC
+ LIMIT 5;
+ 
+-- Group songs into 3 groups based on their popularity score. 70-80 is least popular, 80-90 is popular, and over 90 is most popular
+
+SELECT artist_name,
+       track_name,
+       popularity,
+       CASE WHEN popularity > 60 AND 
+                 popularity <= 80 THEN 'least popular' WHEN popularity > 80 AND 
+                                                            popularity <= 90 THEN 'popular' ELSE 'most popular' END AS popularity_group
+  FROM BIT_DB.Spotifydata
+ ORDER BY popularity DESC;
+ 
+-- How many songs are ranked can be found in each popularity group?
+
+SELECT COUNT( * ) AS num_songs,
+       CASE WHEN popularity > 60 AND popularity <= 80 THEN 'least popular' 
+       WHEN popularity > 80 AND popularity <= 90 THEN 'popular' 
+       ELSE 'most popular' 
+       END AS popularity_group
+  FROM BIT_DB.Spotifydata
+ GROUP BY popularity_group
+ ORDER BY num_songs DESC;
+ 
+-- What is the average danceability score for each artist. Which arist has the highest average danceability score?
+
+SELECT artist_name,
+       AVG(danceability) AS avg_danceability
+  FROM BIT_DB.Spotifydata
+ GROUP BY artist_name
+ ORDER BY avg_danceability DESC
+ LIMIT 1;
+ 
+-- How many times does Olivia Rodrigo appear on the top 50 list, and which song of theirs is most popular?
+
+SELECT COUNT(artist_name),
+       track_name,
+       popularity
+  FROM BIT_DB.Spotifydata
+ WHERE artist_name = 'Olivia Rodrigo'
+ ORDER BY popularity;
+ 
+-- Which artist's name comes up most on the top 50 list?
+
+SELECT COUNT(artist_name) AS num_times_appear,
+       artist_name
+  FROM BIT_DB.Spotifydata
+ GROUP BY artist_name
+ ORDER BY num_times_appear DESC;
+ 
+/* Based on the query above, Olivia Rodrigo and Doja Cat both have 4 songs in the top 50 list. Which artist in the entire list 
+has the highest average popularity score? Does the average popularity score have any correlation with how many times an artists name
+comes up on the top 50 list? */
+
+SELECT COUNT(artist_name) AS num_times_appear,
+       artist_name,
+       AVG(popularity) 
+  FROM BIT_DB.Spotifydata
+ GROUP BY artist_name
+ ORDER BY AVG(popularity) DESC;
+ 
+/* The query above shows that Ed Sheeran has the highest avergage popularity, but he only appears once on the top 50 list. 
+Although Olivia Rodrigo and Doja Cat both appear on the top 50 list 4 times, their higher number of songs and popularity scores 
+bring down their average popularity score. Questions to consider: How can we compare popularity across artists in a more standarized way? */
+
